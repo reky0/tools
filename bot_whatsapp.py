@@ -1,3 +1,6 @@
 import pywhatkit
 
-pywhatkit.sendwhatmsg_instantly("+34603040722", "Pito")
+numero = input("A que numero quieres enviar el mensaje?  ")
+mensaje = input("Que mensaje quieres enviar?  ")
+
+pywhatkit.sendwhatmsg_instantly(numero, mensaje)
