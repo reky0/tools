@@ -1,29 +1,35 @@
-import pytube
+import getpass
+import os
 
-url = input("Que video quieres descargar:  ")
-path = "C:/Users/rault/Desktop/yt_downloader"
+try:
+    import pytube
+except:
+    os.system("python -m pip install pytube")
+    import pytube
 
-yt = pytube.YouTube(url)
+try: 
+    import easygui as eg
+except:
+    os.system("python -m pip install easygui")
+    import easygui as eg
 
-print("Titulo..........: " + str(yt.title))
-print("Duracion (seg)..: " + str(yt.length))
+path = eg.diropenbox("Selecciona una carpeta")
 
-audiost = yt.streams.filter(only_audio=True, file_extension='mp4')
+def elegirCancion():
+    url = input("Que video quieres descargar:  ")
 
-print("\n-----------AUDIO---------")
-for st in audiost:
-    print(str(st).replace("<Stream: itag=\"", "ITAG: ").replace("\" mime_type=\"", "  FORMATO: ").replace("\" abr=\"", "  RESOLUCION: ").replace("\"", ""))
+    yt = pytube.YouTube(url)
 
-videost = yt.streams.filter(only_video=True, file_extension='mp4')
+    return yt
 
-print("\n\n-----------VIDEO---------")
-for st in videost:
-    print(str(st).replace("<Stream: itag=\"", "ITAG: ").replace("\" mime_type=\"", "  FORMATO: ").replace("\" res=\"", "  RESOLUCION: ").replace("\" fps=\"24fps\"", "").replace("\"", ""))
+def descargar(cancion):
+    try:
+        st = cancion.streams.get_highest_resolution()
+        st.download(path)
+    except:
+        os.system('cls')
+        input("HUBO UN ERROR, INTÉNTELO DE NUEVO")
 
-descarga = input("\nElige el video a descargar mediante su \"itag\":  ")
+cancion = elegirCancion()
 
-if descarga.isalnum() == True:
-    st = yt.streams.get_by_itag(descarga)
-    st.download(path)
-else: 
-    print("Ese \"itag\" no es valido")
+descargar(cancion)
