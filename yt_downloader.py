@@ -1,4 +1,3 @@
-import getpass
 import os
 
 try:
@@ -24,8 +23,8 @@ def elegirCancion():
 
 def descargar(cancion):
     try:
-        st = cancion.streams.get_highest_resolution()
-        st.download(path)
+        video = cancion.streams.get_highest_resolution()
+        video.download(path)
     except:
         os.system('cls')
         input("HUBO UN ERROR, INTÉNTELO DE NUEVO")
