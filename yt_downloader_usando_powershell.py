@@ -12,8 +12,8 @@ except:
     import easygui as eg
 
 
-video = input("Que video quieres descargar:  ")
-ruta = eg.diropenbox("Selecciona una carpeta")
+video = input("Enlace del video a descargar:  ")
+ruta = eg.diropenbox("Selecciona una carpeta de destino")
 
 if "youtube" in video:
     os.system("pytube \"" + video + "\" -t \"" + ruta + "\"")
