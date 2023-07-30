@@ -1,34 +1,60 @@
 import os
 
 try:
-    import pytube
+    from pytube import YouTubeexcept:
 except:
     os.system("python -m pip install pytube")
-    import pytube
+    from pytube import YouTube
 
-try: 
-    import easygui as eg
-except:
-    os.system("python -m pip install easygui")
-    import easygui as eg
 
-path = eg.diropenbox("Selecciona una carpeta")
+chars = 'abcdefghijklmnñopqrstuvwxyzABCDEFGHIJKLMNÑOPQRSTUVWXYZ1234567890-'
+chars = list(chars)
+link_file = # ruta (recomendada absoluta) del archivo .txt que contiene los enlaces a descargar (uno por linea)
+destino = # carpeta de destino (ruta absoluta recomendada)
 
-def elegirCancion():
-    url = input("Que video quieres descargar:  ")
+with open(link_file) as file:
+    for line in file:
+        yt = YouTube(line)
+        title = yt.title
+        for char in title:
+            if char in chars:
+                if char.isupper() == True:
+                    title = title.replace(char, char.lower())
+            elif char == 'á' or char == 'Á':
+                title = title.replace(char, 'a')
+            elif char == 'é' or char == 'É':
+                title = title.replace(char, 'e')
+            elif char == 'í' or char == 'Í':
+                title = title.replace(char, 'i')
+            elif char == 'ó' or char == 'Ó':
+                title = title.replace(char, 'o')
+            elif char == 'ú' or char == 'Ú':
+                title = title.replace(char, 'u')
+            elif char == ' ':
+                title = title.replace(char, '-')
+            else:
+                title = title.replace(char, '')
 
-    yt = pytube.YouTube(url)
+        if title[0] == '-':
+            title = list(title)
+            title[0] = ''
+            
+        title = ''.join(title)
 
-    return yt
 
-def descargar(cancion):
-    try:
-        video = cancion.streams.get_highest_resolution()
-        video.download(path)
-    except:
-        os.system('cls')
-        input("HUBO UN ERROR, INTÉNTELO DE NUEVO")
+        for i in range(0,4):
+            if '--' in title:
+                title = title.replace('--', '-')
 
-cancion = elegirCancion()
+            if '---' in title:
+                title = title.replace('---', '-')
 
-descargar(cancion)
+        title = title + '.mp4'
+
+        try:
+            yt.streams.get_highest_resolution().download(output_path=destino, filename=title)
+        except:
+            print('error al descargar ' + title)
+
+    
+    file.close()
